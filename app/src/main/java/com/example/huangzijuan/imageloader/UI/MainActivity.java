@@ -1,4 +1,4 @@
-package com.example.huangzijuan.imageloader.UI;
+package com.example.huangzijuan.imageloader.ui;
 
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -8,12 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.huangzijuan.imageloader.R;
-import com.example.huangzijuan.imageloader.Util.ZoomImageView;
+import com.example.huangzijuan.imageloader.ui.base.BaseActivity;
+import com.example.huangzijuan.imageloader.view.ZoomImageView;
 
 public class MainActivity extends BaseActivity {
 
     private ViewPager mViewPager;
-    private int[] mImgs = new int[] {R.drawable.img, R.drawable.flower, R.drawable.lamp, R.drawable.rainbow};
+    private int[] mImgs = new int[]{R.drawable.img, R.drawable.flower, R.drawable.lamp, R.drawable.rainbow};
     private ImageView[] mImageViews = new ImageView[mImgs.length];
 
     @Override
