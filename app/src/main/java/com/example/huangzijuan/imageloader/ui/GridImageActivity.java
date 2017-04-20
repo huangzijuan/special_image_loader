@@ -1,5 +1,6 @@
 package com.example.huangzijuan.imageloader.ui;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,7 +22,10 @@ import android.widget.Toast;
 
 import com.example.huangzijuan.imageloader.R;
 import com.example.huangzijuan.imageloader.bean.FolderBean;
+import com.example.huangzijuan.imageloader.ui.base.ActivityCollector;
 import com.example.huangzijuan.imageloader.ui.base.BaseActivity;
+import com.example.huangzijuan.imageloader.ui.base.PermissionListener;
+import com.example.huangzijuan.imageloader.util.ToastUtil;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -116,10 +121,29 @@ public class GridImageActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grid_image);
+        ActivityCollector.addActivity(this);
 
-        initView();
-        initDatas();
-        initEvent();
+        requestRunTimePermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                new PermissionListener() {
+                    @Override
+                    public void granted() {
+                        initView();
+                        initDatas();
+                        initEvent();
+                    }
+
+                    @Override
+                    public void denied(@NonNull List<String> deniedPermissions) {
+                        ToastUtil.show("您禁用了权限" + deniedPermissions);
+                    }
+                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 
     private void initView() {
